@@ -25,6 +25,15 @@ Not only that, if an element is unfortunate to be at the border of its parent, i
 
 This makes it very difficult to create a maintainable layout system with margins. [](TODO: We will use them *but never in a container that has padding less than the child's margin*. More on this later.)
 
+## Inline is the enemy
+Having an element as `display: inline` means that it completely ignores its height. Here is a visual difference where an element has been given a height but `inline` ignored it and `inline-block` got it.
+
+![](../images/inline.png)
+
+![](../images/inlineBlock.png)
+
+Also you cannot CSS3 transform inline elements.
+
 # Basic Setup
 There are very few simple things about the default layout of an HTML page that need to be setup in order to prepare it for the application era:
 
