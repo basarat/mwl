@@ -6,9 +6,6 @@ Here's how this book will do it:
 ## Not another CSS details book
 This book isn't about making you awesome at passing the next CSS interview. This book is focused on arming you with the tools that will allow you to create great maintainable applications. This also means that if some CSS property is unintuitive (or unmaintainable at scale) it will not be covered.
 
-## Reusing ideas of the past
-XAML was a technology designed for layout. However there is nothing about HTML that prevents us from using the lessons there and using them to create a reliable layout system for the web.
-
 # Fundamental concepts
 There is very little fundamental knowledge you need. You really only need to know the difference between `margin` (something that's outside) and `padding` (something that is inside). Here's a picture:
 
@@ -68,5 +65,217 @@ html {
 }
 ```
 
+# Flexibility
+Having well defined semantics of *how the layout will happen* is important for a maintainable layout system. The more variables you throw into the semantics the less reliable the layout becomes because *you need to compile the final result in your brain* in order to maintain the layout. We will cover the *concept* of a flexible layout system inspired by a *subset* of CSS flexbox.
+
+## Flex
+Consider the following layout:
+
+```
+------------------------------------
+|            
+|
+|   BODY
+|
+|
+------------------------------------
+```
+
+Here the body *takes up all the available space offered by the parent*.
+
+```
+------------------------------------
+|            
+|            
+|            
+|
+|   BODY
+|
+|
+|
+|
+------------------------------------
+```
+
+The space taken by the container is what is available to its children. No more, no less.
+
+Such a container is called *flex**.
+
+> A *flex* container has the same size as its parent.
+
+## Content
+In the previous example the child *flexed* into the parent. The only other concept we need is that of *content*. **A *content* container determines its size based on the size of its content**. That is all the space it takes up in the parent. This is shown below where if the parent is too big the rest of the space is unused
+
+```
+------------------------------------
+|            
+|
+|   CONTENT
+|
+|
+------------------------------------
+|
+|   UNUSED
+|
+------------------------------------
+```
+If the parent is too small the content will overflow:
+
+```
+------------------------------------
+|            
+|
+|   CONTENT
+------------------------------------
+|   OVERFLOW
+|
+------------------------------------
+```
+
+> A *content* container determines its size based on the size of its content
+
+## Root
+We've seen `flex`ible children and `content` children. These concepts exist inside a *`root`*. The root is simply the *container* that is used as a point of reference for these children.
+
+In CSS flexbox the concept of `root` (CSS `display: flex`) does not exist without combining it with the concept of *flex direction*.
+
+### Flex Direction
+A root has a default *main axis* of `vertical`. This is axis in which the children are layed out. In the *cross axis* the children are by default forced to `flex`.
+
+So there are really two roots:
+* `horizontal` : Lays out children horizontally based on `content` and `flexes` them vertically.
+* `vertical`: Lays out children vertically based on `content` and `flexes` them horizontally.
+[](TODO: screens would help here)
+
+Of-course the children can change this `content` and `flex` choice by saying
+* Main Axis: `content` is default. The can choose to `flex` in the main axis.
+* Cross Axis: `flex` is default. If they have an explicit size (`width` or `height` depending on flex direction) they are treated as `content`.
+
+> TIP: the CSS property is called `flex-direction: 'row' (default corresponding to a vertical layout) | 'column'`
+
+# Children
+We've seen three types of containers : `root`, `flex`, `content`. The next step is to combine the `flex` and `content` children into a `root`.
+
+## Vertical Example
+Consider the following layout:
+
+```
+------------------------------------
+|   HEADER
+|            
+|
+|   BODY
+|
+|
+|   FOOTER
+------------------------------------
+```
+
+Up front we know its *vertical*. Assume that we want the body to *flex* i.e as the root becomes larger:
+
+```
+------------------------------------
+|   HEADER
+|            
+|
+|
+|
+|   BODY
+|
+|
+|
+|
+|   FOOTER
+------------------------------------
+```
+
+In our lingo the `root` here is `vertical` that has three children:
+* `content` header
+* `flex` body
+* `content` footer
+
+Of course the children are going to automatically flex in the cross dimension (horizontal).
+
+## Multiple Flex Children
+The `flex` children actually share the *remainder* of the space left in the `root` after all the `content` children take up the space they need. This is shown below:
+
+```
+------------------------------------
+|   ContentChild
+|            
+|   FlexChild
+|
+|   FlexChild
+|
+|   ContentChild
+------------------------------------
+```
+Upon expansion:
+
+```
+------------------------------------
+|   ContentChild
+|            
+|            
+|            
+|   FlexChild
+|
+|
+|
+|   FlexChild
+|
+|
+|
+|   ContentChild
+------------------------------------
+```
+
+Actually a flex child can decide what *flex scaling factor* (CSS: `flex-grow`) they have. So if you have
+
+```
+A: {flexGrow: 1}
+B: {flexGrow: 2}
+```
+The remainder space is divided into `3` (`1 + 2`) equal parts with `1` part going to a `A` and `2` parts going to `B`.
+[](TODO: image would help)
+
+## Horizontal Example
+
+Consider the layout:
+```
+-----------------------------------------
+|             |           |             |
+|   SIDEBAR   |    BODY   |    SIDEBAR  |
+|             |           |             |
+-----------------------------------------
+```
+Where we want to body to grow:
+```
+--------------------------------------------------------
+|             |                          |             |
+|   SIDEBAR   |             BODY         |    SIDEBAR  |
+|             |                          |             |
+--------------------------------------------------------
+```
+
+Here we have:
+* `horizontal` 
+
+
 # Rethinking the primitives
 WIP If one was creating something for HTML today for application layout you would need a
+
+# Scrolling
+TODO
+
+## Scrolling a sub child
+TODO
+
+# Components
+We've covered enough of layout to allow you to create basic layouts quite easily.
+
+# Overlays
+TODO
+
+# Menu
+TODO
