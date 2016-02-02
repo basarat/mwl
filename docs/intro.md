@@ -104,7 +104,7 @@ Such a container is called *flex**.
 > A *flex* container has the same size as its parent.
 
 ## Content
-In the previous example the child *flexed* into the parent. The only other concept we need is that of *content*. **A *content* container determines its size based on the size of its content**. That is all the space it takes up in the parent. This is shown below where if the parent is too big the rest of the space is unused
+In the previous example the child *flexed* into the parent. The only other concept we need for a child is that of *content*. **A *content* container determines its size based on the size of its content**. That is all the space it takes up in the parent. This is shown below where if the parent is too big the rest of the space is unused
 
 ```
 ------------------------------------
@@ -143,13 +143,13 @@ In CSS flexbox the concept of `root` (CSS `display: flex`) does not exist withou
 A root has a default *main axis* of `vertical`. This is axis in which the children are layed out. In the *cross axis* the children are by default forced to `flex`.
 
 So there are really two roots:
-* `horizontal` : Lays out children horizontally based on `content` and `flexes` them vertically.
+* `horizontal`: Lays out children horizontally based on `content` and `flexes` them vertically.
 * `vertical`: Lays out children vertically based on `content` and `flexes` them horizontally.
 [](TODO: screens would help here)
 
-Of-course the children can change this `content` and `flex` choice by saying
-* Main Axis: `content` is default. The can choose to `flex` in the main axis.
-* Cross Axis: `flex` is default. If they have an explicit size (`width` or `height` depending on flex direction) they are treated as `content`.
+Of-course the children can change the root's `content` and `flex` choice:
+* Main Axis: `content` is default. A child can choose to `flex` in the main axis.
+* Cross Axis: `flex` is default. If the child has an explicit size (`width` or `height` depending on flex direction) they are treated as `content`.
 
 > TIP: the CSS property is called `flex-direction: 'row' (default corresponding to a vertical layout) | 'column'`
 
@@ -161,38 +161,38 @@ Consider the following layout:
 
 ```
 ------------------------------------
-|   HEADER
-|            
-|
-|   BODY
-|
-|
-|   FOOTER
+|            HEADER                |
+------------------------------------            
+|                                  |
+|             BODY                 |
+|                                  |
+------------------------------------
+|             FOOTER               |
 ------------------------------------
 ```
 
-Up front we know its *vertical*. Assume that we want the body to *flex* i.e as the root becomes larger:
+Up front we know its *vertical*. Assume that we want the body to *flex* i.e. as the root becomes larger:
 
 ```
 ------------------------------------
-|   HEADER
-|            
-|
-|
-|
-|   BODY
-|
-|
-|
-|
-|   FOOTER
+|            HEADER                |
+------------------------------------            
+|                                  |
+|                                  |
+|                                  |
+|             BODY                 |
+|                                  |
+|                                  |
+|                                  |
+------------------------------------
+|             FOOTER               |
 ------------------------------------
 ```
 
 In our lingo the `root` here is `vertical` that has three children:
-* `content` header
-* `flex` body
-* `content` footer
+* header: `content`
+* body: `flex`
+* footer: `content`
 
 Of course the children are going to automatically flex in the cross dimension (horizontal).
 
@@ -259,23 +259,64 @@ Where we want to body to grow:
 ```
 
 Here we have:
-* `horizontal` 
+* root: `horizontal`
+* sidebar: `content`
+* body: `flex`
+* sidebar: `content`
 
+This example should have been fairly obvious and was designed to give you a hands on experience 🌹
 
-# Rethinking the primitives
-WIP If one was creating something for HTML today for application layout you would need a
+## Arbitrary Layout
+Consider this layout:
 
-# Scrolling
-TODO
+```
+--------------------------------------------------------
+|                       HEADER                         |
+--------------------------------------------------------
+|             |                          |             |
+|   SIDEBAR   |             BODY         |    SIDEBAR  |
+|             |                          |             |
+--------------------------------------------------------
+|                       FOOTER                         |
+--------------------------------------------------------
+```
+This is actually a layout used by lots of applications. If you think about it, its just a nesting of concepts you already know `vertical`,`horizontal`, `flex`, `content`.
 
-## Scrolling a sub child
-TODO
+In fact its a combination of the first layout:
 
-# Components
-We've covered enough of layout to allow you to create basic layouts quite easily.
+```
+------------------------------------
+|            HEADER                |
+------------------------------------            
+|                                  |
+|             BODY                 |
+|                                  |
+------------------------------------
+|             FOOTER               |
+------------------------------------
+```
 
-# Overlays
-TODO
+Where the body is itself a `horizontal`:
 
-# Menu
-TODO
+```
+-----------------------------------------------
+|                    HEADER                   |
+-----------------------------------------------
+|             |                 |             |
+|   SIDEBAR   |       BODY      |    SIDEBAR  |
+|             |                 |             |
+-----------------------------------------------
+|                     FOOTER                  |
+-----------------------------------------------
+```
+Easy right!
+
+[](TODO: # Scrolling)
+
+[](TODO: # Scrolling a sub child)
+
+[](TODO Components: We've covered enough of layout to allow you to create basic layouts quite easily)
+
+[](TODO: Overlays)
+
+[](TODO: Menu)
